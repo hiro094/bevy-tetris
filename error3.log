@@ -1,0 +1,206 @@
+    Checking bevy-tetris v0.1.0 (D:\works\bevy-tetris)
+warning: unused import: `Grid`
+ --> src\systems\setup.rs:2:24
+  |
+2 | use crate::resources::{Grid, GRID_WIDTH, GRID_HEIGHT};
+  |                        ^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\collision.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `Block`
+ --> src\systems\locking.rs:2:47
+  |
+2 | use crate::components::{Active, GridPosition, Block};
+  |                                               ^^^^^
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\line_clearing.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: use of deprecated type alias `bevy::prelude::EventWriter`: Renamed to `MessageWriter`.
+  --> src\systems\movement.rs:92:22
+   |
+92 |     mut lock_events: EventWriter<crate::systems::locking::PieceLocks>,
+   |                      ^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated type alias `bevy::prelude::EventReader`: Renamed to `MessageReader`.
+  --> src\systems\locking.rs:10:17
+   |
+10 |     mut events: EventReader<PieceLocks>,
+   |                 ^^^^^^^^^^^
+
+error[E0277]: `PieceLocks` is not an `Message`
+  --> src\systems\movement.rs:92:22
+   |
+92 |     mut lock_events: EventWriter<crate::systems::locking::PieceLocks>,
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ invalid `Message`
+   |
+   = help: the trait `bevy::prelude::Message` is not implemented for `PieceLocks`
+   = note: consider annotating `PieceLocks` with `#[derive(Message)]`
+   = help: the following other types implement trait `bevy::prelude::Message`:
+             ActionRequest
+             AppExit
+             AssetEvent<A>
+             AssetLoadFailedEvent<A>
+             GamepadAxisChangedEvent
+             GamepadButtonChangedEvent
+             GamepadButtonStateChangedEvent
+             GamepadConnectionEvent
+           and 43 others
+note: required by a bound in `MessageWriter`
+  --> C:\Users\hiro0\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_ecs-0.17.3\src\message\message_writer.rs:57:33
+   |
+57 | pub struct MessageWriter<'w, E: Message> {
+   |                                 ^^^^^^^ required by this bound in `MessageWriter`
+
+error[E0277]: `PieceLocks` is not an `Message`
+  --> src\systems\locking.rs:10:17
+   |
+10 |     mut events: EventReader<PieceLocks>,
+   |                 ^^^^^^^^^^^^^^^^^^^^^^^ invalid `Message`
+   |
+   = help: the trait `bevy::prelude::Message` is not implemented for `PieceLocks`
+   = note: consider annotating `PieceLocks` with `#[derive(Message)]`
+   = help: the following other types implement trait `bevy::prelude::Message`:
+             ActionRequest
+             AppExit
+             AssetEvent<A>
+             AssetLoadFailedEvent<A>
+             GamepadAxisChangedEvent
+             GamepadButtonChangedEvent
+             GamepadButtonStateChangedEvent
+             GamepadConnectionEvent
+           and 43 others
+note: required by a bound in `MessageReader`
+  --> C:\Users\hiro0\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_ecs-0.17.3\src\message\message_reader.rs:17:37
+   |
+17 | pub struct MessageReader<'w, 's, E: Message> {
+   |                                     ^^^^^^^ required by this bound in `MessageReader`
+
+error[E0599]: no method named `send` found for struct `MessageWriter` in the current scope
+   --> src\systems\movement.rs:117:21
+    |
+117 |         lock_events.send(crate::systems::locking::PieceLocks);
+    |                     ^^^^ method not found in `MessageWriter<'_, PieceLocks>`
+
+error[E0599]: the method `read` exists for struct `MessageReader<'_, '_, PieceLocks>`, but its trait bounds were not satisfied
+  --> src\systems\locking.rs:16:21
+   |
+6  | pub struct PieceLocks;
+   | --------------------- doesn't satisfy `PieceLocks: bevy::prelude::Message`
+...
+16 |     for _ in events.read() {
+   |                     ^^^^ method cannot be called on `MessageReader<'_, '_, PieceLocks>` due to unsatisfied trait bounds
+   |
+   = note: the following trait bounds were not satisfied:
+           `PieceLocks: bevy::prelude::Message`
+note: the trait `bevy::prelude::Message` must be implemented
+  --> C:\Users\hiro0\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_ecs-0.17.3\src\message\mod.rs:96:1
+   |
+96 | pub trait Message: Send + Sync + 'static {}
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: use of deprecated method `bevy::prelude::App::add_event`: Use `add_message` instead.
+  --> src\main.rs:27:10
+   |
+27 |         .add_event::<PieceLocks>()
+   |          ^^^^^^^^^
+
+error[E0277]: `PieceLocks` is not an `Message`
+   --> src\main.rs:27:22
+    |
+27  |         .add_event::<PieceLocks>()
+    |          ---------   ^^^^^^^^^^ invalid `Message`
+    |          |
+    |          required by a bound introduced by this call
+    |
+    = help: the trait `bevy::prelude::Message` is not implemented for `PieceLocks`
+    = note: consider annotating `PieceLocks` with `#[derive(Message)]`
+    = help: the following other types implement trait `bevy::prelude::Message`:
+              ActionRequest
+              AppExit
+              AssetEvent<A>
+              AssetLoadFailedEvent<A>
+              GamepadAxisChangedEvent
+              GamepadButtonChangedEvent
+              GamepadButtonStateChangedEvent
+              GamepadConnectionEvent
+            and 43 others
+note: required by a bound in `bevy::prelude::App::add_event`
+   --> C:\Users\hiro0\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_app-0.17.3\src\app.rs:378:12
+    |
+376 |     pub fn add_event<T>(&mut self) -> &mut Self
+    |            --------- required by a bound in this associated function
+377 |     where
+378 |         T: Message,
+    |            ^^^^^^^ required by this bound in `App::add_event`
+
+error[E0277]: `(fn(Commands<'a, 'b>, ...) {spawn_tetromino}, ..., ..., ..., ...)` does not describe a valid system configuration
+   --> src\main.rs:29:30
+    |
+29  |           .add_systems(Update, (
+    |  __________-----------_________^
+    | |          |
+    | |          required by a bound introduced by this call
+30  | |             spawn_tetromino,
+31  | |             handle_input,
+32  | |             apply_gravity,
+33  | |             render_blocks,
+34  | |             lock_piece_system,
+35  | |         ))
+    | |_________^ invalid system configuration
+    |
+    = help: the trait `IntoScheduleConfigs<Box<(dyn bevy::prelude::System<In = (), Out = ()> + 'static)>, _>` is not implemented for `(fn(Commands<'a, 'b>, ...) {spawn_tetromino}, ..., ..., ..., ...)`
+    = help: the following other types implement trait `IntoScheduleConfigs<T, Marker>`:
+              `(S,)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P)>`
+              `(S0, S1)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1)>`
+              `(S0, S1, S2)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1, P2)>`
+              `(S0, S1, S2, S3)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1, P2, P3)>`
+              `(S0, S1, S2, S3, S4)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1, P2, P3, P4)>`
+              `(S0, S1, S2, S3, S4, S5)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1, P2, P3, P4, P5)>`
+              `(S0, S1, S2, S3, S4, S5, S6)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1, P2, P3, P4, P5, P6)>`
+              `(S0, S1, S2, S3, S4, S5, S6, S7)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1, P2, P3, P4, P5, P6, P7)>`
+            and 12 others
+note: required by a bound in `bevy::prelude::App::add_systems`
+   --> C:\Users\hiro0\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_app-0.17.3\src\app.rs:321:23
+    |
+318 |     pub fn add_systems<M>(
+    |            ----------- required by a bound in this associated function
+...
+321 |         systems: impl IntoScheduleConfigs<ScheduleSystem, M>,
+    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `App::add_systems`
+    = note: the full name for the type has been written to 'D:\works\bevy-tetris\target\debug\deps\bevy_tetris-160e27288f18be33.long-type-14841031905043290215.txt'
+    = note: consider using `--verbose` to print the full type name to the console
+
+warning: unused variable: `new_pivot`
+  --> src\systems\movement.rs:26:13
+   |
+26 |         let new_pivot = piece.position + delta;
+   |             ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_new_pivot`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: variable does not need to be mutable
+ --> src\systems\movement.rs:8:5
+  |
+8 |     mut active_piece: Option<ResMut<ActivePiece>>,
+  |     ----^^^^^^^^^^^^
+  |     |
+  |     help: remove this `mut`
+  |
+  = note: `#[warn(unused_mut)]` on by default
+
+Some errors have detailed explanations: E0277, E0599.
+For more information about an error, try `rustc --explain E0277`.
+warning: `bevy-tetris` (bin "bevy-tetris") generated 9 warnings
+error: could not compile `bevy-tetris` (bin "bevy-tetris") due to 6 previous errors; 9 warnings emitted

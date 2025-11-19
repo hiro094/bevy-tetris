@@ -1,0 +1,187 @@
+    Checking bevy-tetris v0.1.0 (D:\works\bevy-tetris)
+error[E0412]: cannot find type `Commands` in this scope
+ --> src\systems\spawning.rs:5:19
+  |
+5 |     mut commands: Commands,
+  |                   ^^^^^^^^ not found in this scope
+  |
+help: consider importing one of these structs
+  |
+1 + use crate::Commands;
+  |
+1 + use bevy::prelude::Commands;
+  |
+
+error[E0412]: cannot find type `Query` in this scope
+ --> src\systems\spawning.rs:6:20
+  |
+6 |     active_pieces: Query<&Active>,
+  |                    ^^^^^ not found in this scope
+  |
+help: consider importing one of these structs
+  |
+1 + use crate::Query;
+  |
+1 + use bevy::prelude::Query;
+  |
+
+error[E0433]: failed to resolve: use of undeclared type `IVec2`
+  --> src\systems\spawning.rs:13:26
+   |
+13 |     let spawn_position = IVec2::new(GRID_WIDTH / 2, GRID_HEIGHT - 2); // Spawn slightly below top
+   |                          ^^^^^ use of undeclared type `IVec2`
+   |
+help: consider importing one of these structs
+   |
+1  + use crate::IVec2;
+   |
+1  + use bevy::prelude::IVec2;
+   |
+
+error[E0422]: cannot find struct, variant or union type `Sprite` in this scope
+  --> src\systems\spawning.rs:26:13
+   |
+26 |             Sprite {
+   |             ^^^^^^ not found in this scope
+   |
+help: consider importing one of these structs
+   |
+1  + use crate::Sprite;
+   |
+1  + use bevy::prelude::Sprite;
+   |
+
+error[E0433]: failed to resolve: use of undeclared type `Vec2`
+  --> src\systems\spawning.rs:28:35
+   |
+28 |                 custom_size: Some(Vec2::new(CELL_SIZE - 2.0, CELL_SIZE - 2.0)), // Slightly smaller for gap
+   |                                   ^^^^ use of undeclared type `Vec2`
+   |
+help: a struct with a similar name exists
+   |
+28 -                 custom_size: Some(Vec2::new(CELL_SIZE - 2.0, CELL_SIZE - 2.0)), // Slightly smaller for gap
+28 +                 custom_size: Some(Vec::new(CELL_SIZE - 2.0, CELL_SIZE - 2.0)), // Slightly smaller for gap
+   |
+help: consider importing one of these structs
+   |
+1  + use crate::Vec2;
+   |
+1  + use bevy::prelude::Vec2;
+   |
+
+error[E0425]: cannot find function `default` in this scope
+  --> src\systems\spawning.rs:29:19
+   |
+29 |                 ..default()
+   |                   ^^^^^^^ not found in this scope
+   |
+help: consider importing one of these functions
+   |
+1  + use crate::default;
+   |
+1  + use bevy::prelude::default;
+   |
+
+error[E0433]: failed to resolve: use of undeclared type `Transform`
+  --> src\systems\spawning.rs:31:13
+   |
+31 |             Transform::from_xyz(0.0, 0.0, 0.0),
+   |             ^^^^^^^^^ use of undeclared type `Transform`
+   |
+help: consider importing one of these structs
+   |
+1  + use crate::Transform;
+   |
+1  + use bevy::prelude::Transform;
+   |
+
+error[E0412]: cannot find type `Query` in this scope
+ --> src\systems\rendering.rs:5:16
+  |
+5 |     mut query: Query<(&GridPosition, &mut Transform)>,
+  |                ^^^^^ not found in this scope
+  |
+help: consider importing one of these structs
+  |
+1 + use crate::Query;
+  |
+1 + use bevy::prelude::Query;
+  |
+
+error[E0412]: cannot find type `Transform` in this scope
+ --> src\systems\rendering.rs:5:43
+  |
+5 |     mut query: Query<(&GridPosition, &mut Transform)>,
+  |                                           ^^^^^^^^^ not found in this scope
+  |
+help: consider importing one of these structs
+  |
+1 + use crate::Transform;
+  |
+1 + use bevy::prelude::Transform;
+  |
+
+warning: unused import: `Grid`
+ --> src\systems\setup.rs:2:24
+  |
+2 | use crate::resources::{Grid, GRID_WIDTH, GRID_HEIGHT};
+  |                        ^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\movement.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\collision.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\locking.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\line_clearing.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+error[E0277]: `(fn({type error}, {type error}) {spawn_tetromino}, fn({type error}) {render_blocks})` does not describe a valid system configuration
+   --> src\main.rs:26:30
+    |
+26  |         .add_systems(Update, (spawn_tetromino, render_blocks))
+    |          -----------         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ invalid system configuration
+    |          |
+    |          required by a bound introduced by this call
+    |
+    = help: the trait `IntoScheduleConfigs<Box<(dyn bevy::prelude::System<In = (), Out = ()> + 'static)>, _>` is not implemented for `(fn({type error}, {type error}) {spawn_tetromino}, fn({type error}) {render_blocks})`
+    = help: the following other types implement trait `IntoScheduleConfigs<T, Marker>`:
+              `(S,)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P)>`
+              `(S0, S1)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1)>`
+              `(S0, S1, S2)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1, P2)>`
+              `(S0, S1, S2, S3)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1, P2, P3)>`
+              `(S0, S1, S2, S3, S4)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1, P2, P3, P4)>`
+              `(S0, S1, S2, S3, S4, S5)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1, P2, P3, P4, P5)>`
+              `(S0, S1, S2, S3, S4, S5, S6)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1, P2, P3, P4, P5, P6)>`
+              `(S0, S1, S2, S3, S4, S5, S6, S7)` implements `IntoScheduleConfigs<T, (ScheduleConfigTupleMarker, P0, P1, P2, P3, P4, P5, P6, P7)>`
+            and 12 others
+note: required by a bound in `bevy::prelude::App::add_systems`
+   --> C:\Users\hiro0\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_app-0.17.3\src\app.rs:321:23
+    |
+318 |     pub fn add_systems<M>(
+    |            ----------- required by a bound in this associated function
+...
+321 |         systems: impl IntoScheduleConfigs<ScheduleSystem, M>,
+    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `App::add_systems`
+
+Some errors have detailed explanations: E0277, E0412, E0422, E0425, E0433.
+For more information about an error, try `rustc --explain E0277`.
+warning: `bevy-tetris` (bin "bevy-tetris") generated 5 warnings
+error: could not compile `bevy-tetris` (bin "bevy-tetris") due to 10 previous errors; 5 warnings emitted

@@ -1,0 +1,12 @@
+[package]
+name = "bevy-tetris"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bevy = "0.17.3"
+
+# テスト時にメモリとCPUが膨大に食う防止
+[profile.test]
+debuginfo-level = 0
+split-debuginfo = "packed"

@@ -1,0 +1,78 @@
+    Checking bevy-tetris v0.1.0 (D:\works\bevy-tetris)
+warning: unused imports: `GRID_HEIGHT`, `GRID_WIDTH`, and `Grid`
+ --> src\systems\setup.rs:2:24
+  |
+2 | use crate::resources::{Grid, GRID_WIDTH, GRID_HEIGHT};
+  |                        ^^^^  ^^^^^^^^^^  ^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\spawning.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\movement.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\collision.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\locking.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\line_clearing.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\rendering.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+error[E0277]: the trait bound `WindowResolution: From<({float}, {float})>` is not satisfied
+  --> src\main.rs:15:44
+   |
+15 |                 resolution: (800.0, 600.0).into(),
+   |                                            ^^^^ the trait `From<({float}, {float})>` is not implemented for `WindowResolution`
+   |
+   = help: the following other types implement trait `From<T>`:
+             `WindowResolution` implements `From<(u32, u32)>`
+             `WindowResolution` implements `From<UVec2>`
+             `WindowResolution` implements `From<[u32; 2]>`
+   = note: required for `({float}, {float})` to implement `Into<WindowResolution>`
+
+warning: unused variable: `commands`
+ --> src\systems\setup.rs:8:23
+  |
+8 | pub fn setup_grid(mut commands: Commands) {
+  |                       ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_commands`
+  |
+  = note: `#[warn(unused_variables)]` on by default
+
+warning: variable does not need to be mutable
+ --> src\systems\setup.rs:8:19
+  |
+8 | pub fn setup_grid(mut commands: Commands) {
+  |                   ----^^^^^^^^
+  |                   |
+  |                   help: remove this `mut`
+  |
+  = note: `#[warn(unused_mut)]` on by default
+
+For more information about this error, try `rustc --explain E0277`.
+warning: `bevy-tetris` (bin "bevy-tetris") generated 9 warnings
+error: could not compile `bevy-tetris` (bin "bevy-tetris") due to 1 previous error; 9 warnings emitted

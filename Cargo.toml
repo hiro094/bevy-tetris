@@ -5,6 +5,15 @@ edition = "2024"
 
 [dependencies]
 bevy = "0.17.3"
+rand = "0.9.2"
+
+# Enable a small amount of optimization in debug mode
+[profile.dev]
+opt-level = 1
+
+# Enable high optimizations for dependencies (incl. Bevy), but not for our code:
+[profile.dev.package."*"]
+opt-level = 3
 
 # テスト時にメモリとCPUが膨大に食う防止
 [profile.test]

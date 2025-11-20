@@ -1,0 +1,55 @@
+warning: unused manifest key: profile.test.debuginfo-level
+    Checking bevy-tetris v0.1.0 (D:\works\bevy-tetris)
+warning: unused imports: `Active` and `GridPosition`
+ --> src\systems\ghost.rs:3:25
+  |
+3 | use crate::components::{Active, GridPosition};
+  |                         ^^^^^^  ^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+error[E0609]: no field `0` on type `bevy::prelude::Res<'_, GameScore>`
+  --> src\systems\ui.rs:92:58
+   |
+92 |             *text = Text::new(format!("Score: {}", score.0));
+   |                                                          ^ unknown field
+   |
+   = note: available fields are: `score`, `level`, `lines_cleared`
+
+error[E0609]: no field `0` on type `bevy::prelude::ResMut<'_, GameScore>`
+  --> src\systems\game_over.rs:40:15
+   |
+40 |         score.0 = 0;
+   |               ^ unknown field
+   |
+   = note: available fields are: `score`, `level`, `lines_cleared`
+
+warning: unused variable: `next_piece`
+  --> src\systems\movement.rs:13:9
+   |
+13 |     mut next_piece: ResMut<crate::resources::NextPiece>,
+   |         ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_next_piece`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: variable does not need to be mutable
+ --> src\systems\movement.rs:8:5
+  |
+8 |     mut active_piece: Option<ResMut<ActivePiece>>,
+  |     ----^^^^^^^^^^^^
+  |     |
+  |     help: remove this `mut`
+  |
+  = note: `#[warn(unused_mut)]` on by default
+
+warning: variable does not need to be mutable
+  --> src\systems\movement.rs:13:5
+   |
+13 |     mut next_piece: ResMut<crate::resources::NextPiece>,
+   |     ----^^^^^^^^^^
+   |     |
+   |     help: remove this `mut`
+
+For more information about this error, try `rustc --explain E0609`.
+warning: `bevy-tetris` (bin "bevy-tetris") generated 4 warnings
+error: could not compile `bevy-tetris` (bin "bevy-tetris") due to 2 previous errors; 4 warnings emitted

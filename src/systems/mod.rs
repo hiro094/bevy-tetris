@@ -5,3 +5,7 @@ pub mod collision;
 pub mod locking;
 pub mod line_clearing;
 pub mod rendering;
+pub mod ui;
+pub mod game_over;
+pub mod ghost;
+pub mod audio;

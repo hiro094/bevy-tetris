@@ -1,0 +1,15 @@
+warning: unused manifest key: profile.test.debuginfo-level
+    Checking bevy-tetris v0.1.0 (D:\works\bevy-tetris)
+error: unexpected closing delimiter: `}`
+  --> src\systems\line_clearing.rs:20:9
+   |
+13 |             for (_, mut pos) in query.iter_mut() {
+   |                                                  - this opening brace...
+...
+17 |             }
+   |             - ...matches this closing brace
+...
+20 |         } else {
+   |         ^ unexpected closing delimiter
+
+error: could not compile `bevy-tetris` (bin "bevy-tetris") due to 1 previous error

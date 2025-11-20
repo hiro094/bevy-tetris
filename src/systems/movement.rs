@@ -5,11 +5,41 @@ use crate::systems::collision::is_valid_position;
 
 pub fn handle_input(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut active_piece: Option<ResMut<ActivePiece>>,
+    active_piece: Option<ResMut<ActivePiece>>,
     grid: Res<Grid>,
     mut query: Query<(Entity, &mut GridPosition), With<Active>>,
+    mut hold_piece: ResMut<crate::resources::HoldPiece>,
+    mut commands: Commands,
+    mut sound_events: MessageWriter<crate::systems::audio::SoundEvent>,
 ) {
     let Some(mut piece) = active_piece else { return };
+
+    // Hold (C or Shift)
+    if keyboard_input.just_pressed(KeyCode::KeyC) || keyboard_input.just_pressed(KeyCode::ShiftLeft) || keyboard_input.just_pressed(KeyCode::ShiftRight) {
+        if hold_piece.can_hold {
+            // ... (existing hold logic)
+            // Despawn current active blocks
+            for (entity, _) in query.iter() {
+                commands.entity(entity).despawn();
+            }
+            
+            let current_type = piece.piece_type;
+            
+            // Swap or spawn
+            if let Some(held_type) = hold_piece.piece_type {
+                // Swap
+                hold_piece.piece_type = Some(current_type);
+                spawn_piece(&mut commands, held_type);
+            } else {
+                // First hold
+                hold_piece.piece_type = Some(current_type);
+                commands.remove_resource::<ActivePiece>();
+            }
+            
+            hold_piece.can_hold = false;
+            return; 
+        }
+    }
 
     let mut delta = IVec2::ZERO;
     if keyboard_input.just_pressed(KeyCode::ArrowLeft) {
@@ -23,7 +53,6 @@ pub fn handle_input(
     }
 
     if delta != IVec2::ZERO {
-        let new_pivot = piece.position + delta;
         // Check if all current blocks can move by delta.
         let mut can_move = true;
         for (_, pos) in query.iter() {
@@ -39,46 +68,58 @@ pub fn handle_input(
                 pos.x += delta.x;
                 pos.y += delta.y;
             }
+            sound_events.write(crate::systems::audio::SoundEvent::Move);
         }
     }
     
     // Rotation (Up Arrow)
     if keyboard_input.just_pressed(KeyCode::ArrowUp) {
-        // Simple rotation: 90 degrees clockwise
-        // (x, y) -> (-y, x) relative to pivot
+        let old_rot = piece.rotation_state;
+        let new_rot = (old_rot + 1) % 4;
         
-        let pivot = piece.position;
-        let mut new_positions = Vec::new();
-        let mut can_rotate = true;
+        let new_offsets = piece.piece_type.get_offsets_for_rotation(new_rot);
+        let kicks = piece.piece_type.get_srs_kicks(old_rot, new_rot);
         
-        // Collect current entities and their potential new positions
-        let mut entities = Vec::new();
-        for (entity, pos) in query.iter() {
-            let rel_x = pos.x - pivot.x;
-            let rel_y = pos.y - pivot.y;
+        let mut successful_kick = None;
+        let mut final_new_positions = Vec::new();
+        
+        // Try each kick
+        for kick in kicks {
+            let test_pivot = piece.position + IVec2::new(kick.0, kick.1);
+            let mut kick_valid = true;
+            let mut kick_positions = Vec::new();
             
-            // Clockwise: (x, y) -> (y, -x)
-            let new_rel_x = rel_y;
-            let new_rel_y = -rel_x;
+            for (x, y) in new_offsets.iter() {
+                let pos_x = test_pivot.x + x;
+                let pos_y = test_pivot.y + y;
+                
+                if !is_valid_position(&grid, pos_x, pos_y) {
+                    kick_valid = false;
+                    break;
+                }
+                kick_positions.push(GridPosition { x: pos_x, y: pos_y });
+            }
             
-            let new_x = pivot.x + new_rel_x;
-            let new_y = pivot.y + new_rel_y;
-            
-            if !is_valid_position(&grid, new_x, new_y) {
-                can_rotate = false;
+            if kick_valid {
+                successful_kick = Some(test_pivot);
+                final_new_positions = kick_positions;
                 break;
             }
-            new_positions.push(GridPosition { x: new_x, y: new_y });
-            entities.push(entity);
         }
         
-        if can_rotate {
-            for (i, entity) in entities.iter().enumerate() {
-                if let Ok((_, mut pos)) = query.get_mut(*entity) {
-                    *pos = new_positions[i];
+        if let Some(new_pivot) = successful_kick {
+            // Apply rotation
+            piece.position = new_pivot;
+            piece.rotation_state = new_rot;
+            
+            let mut i = 0;
+            for (_, mut pos) in query.iter_mut() {
+                if i < final_new_positions.len() {
+                    *pos = final_new_positions[i];
+                    i += 1;
                 }
             }
-            piece.rotation_state = (piece.rotation_state + 1) % 4;
+            sound_events.write(crate::systems::audio::SoundEvent::Rotate);
         }
     }
 }
@@ -86,7 +127,7 @@ pub fn handle_input(
 pub fn apply_gravity(
     time: Res<Time>,
     mut timer: ResMut<GameTimer>,
-    mut active_piece: Option<ResMut<ActivePiece>>,
+    active_piece: Option<ResMut<ActivePiece>>,
     grid: Res<Grid>,
     mut query: Query<&mut GridPosition, With<Active>>,
     mut lock_events: MessageWriter<crate::systems::locking::PieceLocks>,
@@ -116,4 +157,36 @@ pub fn apply_gravity(
     } else {
         lock_events.write(crate::systems::locking::PieceLocks);
     }
+}
+
+fn spawn_piece(commands: &mut Commands, piece_type: crate::components::TetrominoType) {
+    use crate::resources::{CELL_SIZE, GRID_WIDTH, GRID_HEIGHT, ActivePiece};
+    use crate::components::{Block, Active, GridPosition};
+    
+    let spawn_position = IVec2::new(GRID_WIDTH / 2, GRID_HEIGHT - 2);
+    let offsets = piece_type.get_offsets_for_rotation(0);
+    let color = piece_type.get_color();
+    
+    for (x, y) in offsets.iter() {
+        commands.spawn((
+            Block,
+            Active,
+            GridPosition {
+                x: spawn_position.x + x,
+                y: spawn_position.y + y,
+            },
+            Sprite {
+                color,
+                custom_size: Some(Vec2::new(CELL_SIZE - 2.0, CELL_SIZE - 2.0)),
+                ..default()
+            },
+            Transform::from_xyz(0.0, 0.0, 0.0),
+        ));
+    }
+    
+    commands.insert_resource(ActivePiece {
+        piece_type,
+        position: spawn_position,
+        rotation_state: 0,
+    });
 }

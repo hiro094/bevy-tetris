@@ -1,0 +1,102 @@
+warning: unused manifest key: profile.test.debuginfo-level
+    Checking bevy-tetris v0.1.0 (D:\works\bevy-tetris)
+warning: unused import: `Grid`
+ --> src\systems\setup.rs:2:24
+  |
+2 | use crate::resources::{Grid, GRID_WIDTH, GRID_HEIGHT};
+  |                        ^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `rand::Rng`
+ --> src\systems\spawning.rs:6:5
+  |
+6 | use rand::Rng;
+  |     ^^^^^^^^^
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\collision.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `Block`
+ --> src\systems\locking.rs:2:47
+  |
+2 | use crate::components::{Active, GridPosition, Block};
+  |                                               ^^^^^
+
+error[E0599]: no method named `get_single` found for struct `bevy::prelude::Query` in the current scope
+  --> src\systems\ui.rs:73:45
+   |
+73 |         if let Ok(container_entity) = query.get_single() {
+   |                                             ^^^^^^^^^^
+   |
+help: there is a method `single` with a similar name
+   |
+73 -         if let Ok(container_entity) = query.get_single() {
+73 +         if let Ok(container_entity) = query.single() {
+   |
+
+error[E0614]: type `bevy::prelude::Entity` cannot be dereferenced
+  --> src\systems\ui.rs:77:37
+   |
+77 |                     commands.entity(*child).despawn_recursive();
+   |                                     ^^^^^^ can't be dereferenced
+
+error[E0599]: no method named `despawn_recursive` found for struct `EntityCommands` in the current scope
+  --> src\systems\ui.rs:77:45
+   |
+77 |                     commands.entity(*child).despawn_recursive();
+   |                                             ^^^^^^^^^^^^^^^^^ method not found in `EntityCommands<'_>`
+
+warning: unused variable: `new_pivot`
+  --> src\systems\movement.rs:26:13
+   |
+26 |         let new_pivot = piece.position + delta;
+   |             ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_new_pivot`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: variable does not need to be mutable
+ --> src\systems\movement.rs:8:5
+  |
+8 |     mut active_piece: Option<ResMut<ActivePiece>>,
+  |     ----^^^^^^^^^^^^
+  |     |
+  |     help: remove this `mut`
+  |
+  = note: `#[warn(unused_mut)]` on by default
+
+warning: variable does not need to be mutable
+   --> src\systems\movement.rs:107:5
+    |
+107 |     mut active_piece: Option<ResMut<ActivePiece>>,
+    |     ----^^^^^^^^^^^^
+    |     |
+    |     help: remove this `mut`
+
+warning: unused variable: `piece`
+  --> src\systems\locking.rs:18:21
+   |
+18 |         if let Some(piece) = active_piece.as_mut() {
+   |                     ^^^^^ help: if this is intentional, prefix it with an underscore: `_piece`
+
+warning: unused variable: `score`
+  --> src\systems\locking.rs:14:9
+   |
+14 |     mut score: ResMut<GameScore>,
+   |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_score`
+
+warning: variable does not need to be mutable
+  --> src\systems\locking.rs:14:5
+   |
+14 |     mut score: ResMut<GameScore>,
+   |     ----^^^^^
+   |     |
+   |     help: remove this `mut`
+
+Some errors have detailed explanations: E0599, E0614.
+For more information about an error, try `rustc --explain E0599`.
+warning: `bevy-tetris` (bin "bevy-tetris") generated 10 warnings
+error: could not compile `bevy-tetris` (bin "bevy-tetris") due to 3 previous errors; 10 warnings emitted

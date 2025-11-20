@@ -1,4 +1,3 @@
-use bevy::prelude::*;
 use crate::resources::{Grid, GRID_WIDTH, GRID_HEIGHT};
 
 pub fn is_valid_position(

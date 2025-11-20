@@ -1,0 +1,25 @@
+warning: unused manifest key: profile.test.debuginfo-level
+    Checking bevy-tetris v0.1.0 (D:\works\bevy-tetris)
+warning: unused import: `Grid`
+ --> src\systems\setup.rs:2:24
+  |
+2 | use crate::resources::{Grid, GRID_WIDTH, GRID_HEIGHT};
+  |                        ^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `bevy::prelude::*`
+ --> src\systems\collision.rs:1:5
+  |
+1 | use bevy::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+
+error[E0614]: type `bevy::prelude::Entity` cannot be dereferenced
+  --> src\systems\ui.rs:77:37
+   |
+77 |                     commands.entity(*child).despawn();
+   |                                     ^^^^^^ can't be dereferenced
+
+For more information about this error, try `rustc --explain E0614`.
+warning: `bevy-tetris` (bin "bevy-tetris") generated 2 warnings
+error: could not compile `bevy-tetris` (bin "bevy-tetris") due to 1 previous error; 2 warnings emitted

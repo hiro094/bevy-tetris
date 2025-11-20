@@ -1,0 +1,55 @@
+warning: unused manifest key: profile.test.debuginfo-level
+    Checking bevy-tetris v0.1.0 (D:\works\bevy-tetris)
+warning: unused import: `crate::components::Active`
+ --> src\systems\ghost.rs:3:5
+  |
+3 | use crate::components::Active;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+error[E0283]: type annotations needed
+   --> src\systems\audio.rs:47:9
+    |
+47  |         AudioPlayer(asset_server.load("audio/bgm.ogg")),
+    |         ^^^^^^^^^^^ ---------------------------------- type must be known at this point
+    |         |
+    |         cannot infer type of the type parameter `Source` declared on the struct `AudioPlayer`
+    |
+    = note: cannot satisfy `_: Asset`
+    = help: the following types implement trait `Asset`:
+              ()
+              AnimationClip
+              AnimationGraph
+              AutoExposureCompensationCurve
+              ColorMaterial
+              DynamicScene
+              ExtendedMaterial<B, E>
+              Font
+            and 22 others
+note: required by a bound in `bevy::prelude::AudioPlayer`
+   --> C:\Users\hiro0\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_audio-0.17.3\src\audio.rs:253:13
+    |
+251 | pub struct AudioPlayer<Source = AudioSource>(pub Handle<Source>)
+    |            ----------- required by a bound in this tuple struct
+252 | where
+253 |     Source: Asset + Decodable;
+    |             ^^^^^ required by this bound in `bevy::prelude::AudioPlayer`
+help: consider specifying the generic argument
+    |
+47  |         AudioPlayer::<Source>(asset_server.load("audio/bgm.ogg")),
+    |                    ++++++++++
+
+warning: variable does not need to be mutable
+ --> src\systems\movement.rs:8:5
+  |
+8 |     mut active_piece: Option<ResMut<ActivePiece>>,
+  |     ----^^^^^^^^^^^^
+  |     |
+  |     help: remove this `mut`
+  |
+  = note: `#[warn(unused_mut)]` on by default
+
+For more information about this error, try `rustc --explain E0283`.
+warning: `bevy-tetris` (bin "bevy-tetris") generated 2 warnings
+error: could not compile `bevy-tetris` (bin "bevy-tetris") due to 1 previous error; 2 warnings emitted

@@ -37,8 +37,33 @@ pub struct ActivePiece {
     pub rotation_state: usize, // 0, 1, 2, 3
 }
 
+#[derive(Resource)]
+pub struct NextPiece {
+    pub piece_type: TetrominoType,
+}
+
 #[derive(Resource, Default)]
-pub struct GameScore(pub u32);
+pub struct HoldPiece {
+    pub piece_type: Option<TetrominoType>,
+    pub can_hold: bool,
+}
+
+#[derive(Resource)]
+pub struct GameScore {
+    pub score: u32,
+    pub level: u32,
+    pub lines_cleared: u32,
+}
+
+impl Default for GameScore {
+    fn default() -> Self {
+        Self {
+            score: 0,
+            level: 1,
+            lines_cleared: 0,
+        }
+    }
+}
 
 #[derive(Resource)]
 pub struct GameTimer(pub Timer);

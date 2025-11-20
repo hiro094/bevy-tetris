@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use crate::resources::{Grid, GRID_WIDTH, GRID_HEIGHT};
+use crate::resources::{GRID_WIDTH, GRID_HEIGHT};
 
 pub fn setup_camera(mut commands: Commands) {
     commands.spawn(Camera2d);

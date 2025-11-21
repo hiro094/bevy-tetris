@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bevy Tetris</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+    </style>
+<link rel="modulepreload" href="./bevy-tetris-20b7cd882e66973d.js" crossorigin="anonymous" integrity="sha384-QLWopyMz3MU4UOggd1l+JbAerBW8WtIiMcx5zw9a71JHwjLT9Sp1z3sQS/uzXGpy"><link rel="preload" href="./bevy-tetris-20b7cd882e66973d_bg.wasm" crossorigin="anonymous" integrity="sha384-tvw6gxDu2lj5d6Es0fkpJXLePg9eQGelePuXaw8l0MYYkRYSIS3EiFo7zATWAsTr" as="fetch" type="application/wasm"></head>
+<body>
+    
+
+<script type="module">
+import init, * as bindings from './bevy-tetris-20b7cd882e66973d.js';
+const wasm = await init({ module_or_path: './bevy-tetris-20b7cd882e66973d_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script></body>
+</html>
